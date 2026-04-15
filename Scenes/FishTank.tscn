@@ -1,0 +1,86 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://Scripts/GoldfishMesh.cs"     id="1"]
+[ext_resource type="Script" path="res://Scripts/FishController.cs"   id="2"]
+[ext_resource type="Script" path="res://Scripts/FishAnimator.cs"     id="3"]
+[ext_resource type="Script" path="res://Scripts/FoodManager.cs"      id="4"]
+[ext_resource type="Shader"  path="res://Shaders/fish_body.gdshader" id="5"]
+[ext_resource type="Shader"  path="res://Shaders/fish_fins.gdshader" id="6"]
+
+[node name="FishTank" type="Node3D"]
+
+; ── Lighting ──────────────────────────────────────────────────────────────────
+
+; Key light: warm top-down, simulates surface light filtering down
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 8, 0)
+light_color = Color(0.95, 0.92, 0.82, 1)
+light_energy = 1.6
+shadow_enabled = true
+
+; Fill: cool blue from below — underwater bounce
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+light_color = Color(0.2, 0.55, 1.0, 1)
+light_energy = 0.5
+omni_range = 20.0
+
+; ── Camera ────────────────────────────────────────────────────────────────────
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.906, -0.423, 0, 0.423, 0.906, 0, 3, 8)
+fov = 50.0
+
+; ── Tank geometry (glass box — thin CSGBox walls) ─────────────────────────────
+
+[node name="Tank" type="CSGBox3D" parent="."]
+size = Vector3(10, 4, 10)
+use_collision = false
+
+[node name="WaterSurface" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+size = Vector3(10, 0.02, 10)
+
+; ── Food manager ──────────────────────────────────────────────────────────────
+
+[node name="FoodManager" type="Node3D" parent="."]
+script = ExtResource("4")
+WaterSurfaceY = 1.5
+GameCamera = NodePath("../Camera3D")
+
+; ── Goldfish ──────────────────────────────────────────────────────────────────
+
+[node name="Goldfish" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+
+; FishController drives movement; references FoodManager sibling
+[node name="FishController" type="Node3D" parent="Goldfish"]
+script = ExtResource("2")
+FoodManagerPath = NodePath("../../FoodManager")
+TankHalfExtents = Vector3(4.5, 1.8, 4.5)
+RestDepth = -0.3
+
+; FishAnimator dispatches fish_swim.glsl; references mesh nodes
+[node name="FishAnimator" type="Node" parent="Goldfish"]
+script = ExtResource("3")
+FishControllerPath = NodePath("../FishController")
+BodyMesh = NodePath("../GoldfishBody")
+FinMesh  = NodePath("../GoldfishBody")
+
+; GoldfishMesh builds the procedural mesh automatically in _Ready
+[node name="GoldfishBody" type="MeshInstance3D" parent="Goldfish"]
+script = ExtResource("1")
+cast_shadow = 1
+
+; ── UI hint ───────────────────────────────────────────────────────────────────
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HintLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -36
+offset_right = 340
+offset_bottom = 0
+text = "Click the water surface to drop food"

@@ -110,7 +110,7 @@ public partial class FishManager : Node
         }
 
         var spirV   = shaderFile.GetSpirV();
-        _shader     = _rd.ShaderCreateFromSpirv(spirV);
+        _shader     = _rd.ShaderCreateFromSpirV(spirV);
         _pipeline   = _rd.ComputePipelineCreate(_shader);
 
         CreateBuffers();

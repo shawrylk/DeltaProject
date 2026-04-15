@@ -1,0 +1,11 @@
+<Project Sdk="Godot.NET.Sdk/4.6.0">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <Configurations>Debug;ExportDebug;ExportRelease</Configurations>
+    <ConfigurationGroup Condition="'$(Configuration)' == 'Debug'">Debug</ConfigurationGroup>
+    <ConfigurationGroup Condition="'$(Configuration)' == 'ExportDebug'">Debug</ConfigurationGroup>
+    <ConfigurationGroup Condition="'$(Configuration)' == 'ExportRelease'">Release</ConfigurationGroup>
+  </PropertyGroup>
+</Project>

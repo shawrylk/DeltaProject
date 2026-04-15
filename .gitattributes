@@ -1,0 +1,18 @@
+# Normalize to LF in repo, LF on checkout (cross-platform consistency)
+* text=auto eol=lf
+
+*.gdshader text eol=lf
+*.glsl     text eol=lf
+*.tscn     text eol=lf
+*.tres     text eol=lf
+*.godot    text eol=lf
+*.cs       text eol=lf
+*.csproj   text eol=lf
+*.md       text eol=lf
+
+# Binaries — never diff/merge
+*.png binary
+*.jpg binary
+*.wav binary
+*.ogg binary
+*.ttf binary

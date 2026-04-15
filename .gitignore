@@ -1,0 +1,31 @@
+# Godot — generated and editor cache
+.godot/
+*.translation
+export_presets.cfg
+.import/
+
+# Godot C# / Mono
+.mono/
+data_*/
+mono_crash.*.json
+
+# .NET build artifacts
+bin/
+obj/
+*.user
+.vs/
+*.suo
+*.DotSettings.user
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Unity leftovers (safe to delete these dirs entirely)
+Assets/
+ProjectSettings/
+Packages/
+Library/
+Temp/
+UserSettings/

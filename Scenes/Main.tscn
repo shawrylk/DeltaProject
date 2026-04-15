@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/FishManager.cs" id="1"]
+[ext_resource type="Script" path="res://Scripts/FishRenderer.cs" id="2"]
+[ext_resource type="Script" path="res://Scripts/FishUI.cs" id="3"]
+
+[node name="Main" type="Node3D"]
+
+; Key sunlight — warm top-down angle for LOL bright-contrast look
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 60, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.8
+shadow_enabled = true
+
+; Fill light — cool blue from below for underwater rim pop
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 0)
+light_color = Color(0.2, 0.55, 1, 1)
+light_energy = 0.6
+omni_range = 120.0
+
+; Default camera — orbit-friendly starting position
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.819, -0.574, 0, 0.574, 0.819, 0, 25, 55)
+fov = 55.0
+
+; FishManager — pure logic node, no spatial transform needed
+[node name="FishManager" type="Node" parent="."]
+script = ExtResource("1")
+
+; FishRenderer — MultiMeshInstance3D subclass
+[node name="FishRenderer" type="MultiMeshInstance3D" parent="."]
+script = ExtResource("2")
+
+; UI overlay — CanvasLayer renders on top of 3D scene
+[node name="FishUI" type="CanvasLayer" parent="."]
+script = ExtResource("3")

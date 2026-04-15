@@ -8,4 +8,8 @@
     <ConfigurationGroup Condition="'$(Configuration)' == 'ExportDebug'">Debug</ConfigurationGroup>
     <ConfigurationGroup Condition="'$(Configuration)' == 'ExportRelease'">Release</ConfigurationGroup>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeltaProject.Domain\DeltaProject.Domain.csproj" />
+    <ProjectReference Include="..\DeltaProject.Infrastructure\DeltaProject.Infrastructure.csproj" />
+  </ItemGroup>
 </Project>

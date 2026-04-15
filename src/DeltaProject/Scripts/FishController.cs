@@ -1,3 +1,4 @@
+using DeltaProject.Domain;
 using Godot;
 using System;
 
@@ -8,7 +9,6 @@ using System;
 /// </summary>
 public partial class FishController : Node3D
 {
-    public enum FishState { Idle, Wander, SeekFood, Eat }
 
     // ── Exports ───────────────────────────────────────────────────────────────
     [Export] public NodePath FoodManagerPath = new NodePath("../FoodManager");

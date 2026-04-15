@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://Scripts/FishManager.cs" id="1"]
 [ext_resource type="Script" path="res://Scripts/FishRenderer.cs" id="2"]
 [ext_resource type="Script" path="res://Scripts/FishUI.cs" id="3"]
+[ext_resource type="Script" path="res://Scripts/AnimPreviewPanel.cs" id="4"]
 
 [node name="Main" type="Node3D"]
 
@@ -36,3 +37,7 @@ script = ExtResource("2")
 ; UI overlay — CanvasLayer renders on top of 3D scene
 [node name="FishUI" type="CanvasLayer" parent="."]
 script = ExtResource("3")
+
+; Animation shader preview — right-side panel, isolated SubViewport
+[node name="AnimPreview" type="CanvasLayer" parent="."]
+script = ExtResource("4")

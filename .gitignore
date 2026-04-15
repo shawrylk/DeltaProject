@@ -1,5 +1,5 @@
 # Godot — generated and editor cache
-.godot/
+**/.godot/
 *.translation
 export_presets.cfg
 .import/
@@ -22,10 +22,6 @@ obj/
 Thumbs.db
 desktop.ini
 
-# Unity leftovers (safe to delete these dirs entirely)
-Assets/
-ProjectSettings/
-Packages/
-Library/
-Temp/
-UserSettings/
+# Local tooling — not project source
+.dual-graph/
+.claude/

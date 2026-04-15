@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://cxu6w460fdmu7"
+path="res://.godot/imported/fish_simulation.glsl-83944ed6c00c2b346f601488248f38a5.res"
+
+[deps]
+
+source_file="res://Shaders/fish_simulation.glsl"
+dest_files=["res://.godot/imported/fish_simulation.glsl-83944ed6c00c2b346f601488248f38a5.res"]
+
+[params]
+

@@ -49,7 +49,8 @@ uniform float scale_contrast : hint_range(0.0, 0.4)   = 0.12;
 uniform float iridescence    : hint_range(0.0, 1.0)   = 0.18;
 
 varying vec2  v_uv;
-varying float v_body_u;   // UV.x remapped for wave envelope
+varying float v_body_u;
+varying float v_instance_tint_val;
 varying vec3  v_normal_ws;
 varying vec3  v_pos_ws;
 
@@ -66,6 +67,7 @@ void vertex() {
     float u = UV.x;   // 0 = snout, 1 = peduncle
     v_uv = UV;
     v_body_u = u;
+    v_instance_tint_val = INSTANCE_CUSTOM.g;
 
     // Travelling sine wave: phase propagates nose → tail
     float wave = sin(u * wave_freq * TAU - body_phase) * body_amp * wave_envelope(u);
@@ -116,7 +118,7 @@ void fragment() {
     base_col.rgb *= (1.0 - scale_contrast * (1.0 - sc));
 
     // ── Instance hue tint (INSTANCE_CUSTOM.g carries tint strength) ───────────
-    float tint = INSTANCE_CUSTOM.g * instance_tint;
+    float tint = v_instance_tint_val * instance_tint;
     base_col.rgb = mix(base_col.rgb, base_col.rgb * 1.2, tint);
 
     // ── Iridescence (view-angle colour shift) ─────────────────────────────────
@@ -131,7 +133,7 @@ void fragment() {
 
 void light() {
     // ── Diffuse NdotL → cel bands ─────────────────────────────────────────────
-    float NdotL = clamp(dot(v_normal_ws, LIGHT), 0.0, 1.0) * ATTENUATION;
+    float NdotL = clamp(dot(NORMAL, LIGHT), 0.0, 1.0) * ATTENUATION;
 
     vec3 cel;
     if (NdotL < band1 + band_soft)
@@ -145,14 +147,13 @@ void light() {
 
     DIFFUSE_LIGHT += sat(cel, saturation) * LIGHT_COLOR;
 
-    // ── Specular (hard dot) ───────────────────────────────────────────────────
-    vec3  H        = normalize(LIGHT + normalize(CAMERA_POSITION_WORLD - v_pos_ws));
-    float NdotH    = clamp(dot(v_normal_ws, H), 0.0, 1.0);
+    // ── Specular (hard dot, Blinn-Phong) ─────────────────────────────────────
+    float NdotH    = clamp(dot(NORMAL, normalize(LIGHT + VIEW)), 0.0, 1.0);
     float spec_cel = smoothstep(spec_threshold - spec_hard, spec_threshold + spec_hard, NdotH);
     SPECULAR_LIGHT += col_specular.rgb * spec_cel * LIGHT_COLOR * ATTENUATION;
 
     // ── Rim / Fresnel ─────────────────────────────────────────────────────────
-    float NdotV    = clamp(dot(v_normal_ws, normalize(CAMERA_POSITION_WORLD - v_pos_ws)), 0.0, 1.0);
-    float rim      = pow(1.0 - NdotV, rim_power) * rim_strength;
+    float NdotV = clamp(dot(NORMAL, VIEW), 0.0, 1.0);
+    float rim   = pow(1.0 - NdotV, rim_power) * rim_strength;
     SPECULAR_LIGHT += col_rim.rgb * rim * LIGHT_COLOR * ATTENUATION;
 }

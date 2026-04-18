@@ -102,7 +102,7 @@ void fragment() {
 }
 
 void light() {
-    float NdotL = clamp(dot(v_normal_ws, LIGHT), 0.0, 1.0) * ATTENUATION;
+    float NdotL = clamp(dot(NORMAL, LIGHT), 0.0, 1.0) * ATTENUATION;
 
     vec3 cel;
     if (NdotL < band1 + band_soft)

@@ -117,10 +117,10 @@ void main() {
     }
 
     // ── Soft boundary repulsion ───────────────────────────────────────────
-    vec3 half = params.boundsHalfExtents.xyz;
-    accel.x += boundaryForce(pos.x, half.x, params.boundaryMargin);
-    accel.y += boundaryForce(pos.y, half.y, params.boundaryMargin);
-    accel.z += boundaryForce(pos.z, half.z, params.boundaryMargin);
+    vec3 halfExt = params.boundsHalfExtents.xyz;
+    accel.x += boundaryForce(pos.x, halfExt.x, params.boundaryMargin);
+    accel.y += boundaryForce(pos.y, halfExt.y, params.boundaryMargin);
+    accel.z += boundaryForce(pos.z, halfExt.z, params.boundaryMargin);
 
     // ── Integrate ─────────────────────────────────────────────────────────
     vel += accel * params.deltaTime;
@@ -132,7 +132,7 @@ void main() {
     pos += vel * params.deltaTime;
 
     // Hard clamp as last resort (prevents NaN from propagating).
-    pos = clamp(pos, -half, half);
+    pos = clamp(pos, -halfExt, halfExt);
 
     fishBuffer.fish[index].position = pos;
     fishBuffer.fish[index].velocity = vel;

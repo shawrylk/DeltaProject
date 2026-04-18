@@ -56,6 +56,8 @@ uniform float head_end   : hint_range(0.0, 0.5)  = 0.18;
 uniform float tail_start : hint_range(0.5, 1.0)  = 0.62;
 
 // ── Sine-wave animation ───────────────────────────────────────────────────────
+varying vec3 v_instance_color;
+
 uniform float wave_frequency : hint_range(0.1, 12.0) = 2.5;
 uniform float wave_amplitude : hint_range(0.0, 0.6)  = 0.13;
 uniform float wave_speed     : hint_range(0.0, 20.0) = 5.0;
@@ -82,6 +84,8 @@ void vertex() {
     } else {
         flex = mix(head_flex, 1.0, (t - head_end) * inv_body);
     }
+
+    v_instance_color = COLOR.rgb;
 
     // Per-instance phase from INSTANCE_CUSTOM.r (0..1, mapped to 0..TAU).
     float phase = INSTANCE_CUSTOM.r * TAU;
@@ -110,7 +114,7 @@ void fragment() {
 
     // Base albedo — lighting handled in light().  Use mid tone as neutral base.
     // Instance tint from MultiMesh.SetInstanceColor() blends into the palette.
-    vec3 tinted_mid = mix(color_mid.rgb, color_mid.rgb * COLOR.rgb * 2.0,
+    vec3 tinted_mid = mix(color_mid.rgb, color_mid.rgb * v_instance_color * 2.0,
                           instance_tint_strength);
     ALBEDO    = tinted_mid;
     METALLIC  = 0.0;
@@ -142,7 +146,7 @@ void light() {
     }
 
     // Blend per-instance tint into diffuse.
-    cel = mix(cel, cel * COLOR.rgb * 1.8, instance_tint_strength);
+    cel = mix(cel, cel * v_instance_color * 1.8, instance_tint_strength);
 
     // ── Saturation boost (LOL vibrancy) ───────────────────────────────────
     float luma = dot(cel, vec3(0.299, 0.587, 0.114));
@@ -151,7 +155,7 @@ void light() {
     DIFFUSE_LIGHT += cel * LIGHT_COLOR * ATTENUATION;
 
     // ── Hard specular (Blinn-Phong threshold) ─────────────────────────────
-    float spec = dot(NORMAL, HALF);
+    float spec = dot(NORMAL, normalize(LIGHT + VIEW));
     float spec_mask = smoothstep(specular_threshold - specular_hardness,
                                  specular_threshold + specular_hardness, spec);
     SPECULAR_LIGHT += color_specular.rgb * spec_mask * LIGHT_COLOR * ATTENUATION;

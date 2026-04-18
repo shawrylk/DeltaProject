@@ -15,6 +15,7 @@ config/description="GPU-driven fish simulation — boid behaviour with LoL-style
 config/version="0.1.0"
 run/main_scene="res://Scenes/Main.tscn"
 config/features=PackedStringArray("4.6", "C#", "Forward Plus")
+boot_splash/show_image=false
 
 [display]
 

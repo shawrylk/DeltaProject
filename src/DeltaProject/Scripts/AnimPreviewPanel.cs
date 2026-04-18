@@ -61,7 +61,6 @@ public partial class AnimPreviewPanel : CanvasLayer
             OwnWorld3D             = true,   // isolated world — no swarm, no main lights
             RenderTargetUpdateMode = SubViewport.UpdateMode.Always,
         };
-        AddChild(_viewport);
 
         var dir = new DirectionalLight3D { LightColor = new Color(1f, 0.96f, 0.88f), LightEnergy = 1.6f };
         dir.RotateObjectLocal(Vector3.Right, -0.8f);
@@ -244,8 +243,7 @@ public partial class AnimPreviewPanel : CanvasLayer
         float x = _camDist * MathF.Cos(_pitch) * MathF.Sin(_yaw);
         float y = _camDist * MathF.Sin(_pitch);
         float z = _camDist * MathF.Cos(_pitch) * MathF.Cos(_yaw);
-        _cam.Position = new Vector3(x, y, z);
-        _cam.LookAt(Vector3.Zero, Vector3.Up);
+        _cam.LookAtFromPosition(new Vector3(x, y, z), Vector3.Zero, Vector3.Up);
     }
 
     // ── UI helpers ────────────────────────────────────────────────────────────

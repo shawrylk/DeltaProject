@@ -1,43 +1,36 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://ceaoidt3dsrj2"]
 
-[ext_resource type="Script" path="res://Scripts/FishManager.cs" id="1"]
-[ext_resource type="Script" path="res://Scripts/FishRenderer.cs" id="2"]
-[ext_resource type="Script" path="res://Scripts/FishUI.cs" id="3"]
-[ext_resource type="Script" path="res://Scripts/AnimPreviewPanel.cs" id="4"]
+[ext_resource type="Script" uid="uid://bt60blox1tc0x" path="res://Scripts/FishManager.cs" id="1"]
+[ext_resource type="Script" uid="uid://c5gvv778ro5fx" path="res://Scripts/FishRenderer.cs" id="2"]
+[ext_resource type="Script" uid="uid://o3lsdk86sghe" path="res://Scripts/FishUI.cs" id="3"]
+[ext_resource type="Script" uid="uid://8tv7t8tm0ub8" path="res://Scripts/AnimPreviewPanel.cs" id="4"]
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=1091002619]
 
-; Key sunlight — warm top-down angle for LOL bright-contrast look
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 60, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1856694382]
+transform = Transform3D(0.86601907, -0.3535631, 0.3535593, 0, 0.70710295, 0.7071106, -0.500011, -0.61237127, 0.61236465, 0, 60, 0)
 light_color = Color(1, 0.96, 0.88, 1)
 light_energy = 1.8
 shadow_enabled = true
 
-; Fill light — cool blue from below for underwater rim pop
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=2025479881]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 0)
 light_color = Color(0.2, 0.55, 1, 1)
 light_energy = 0.6
 omni_range = 120.0
 
-; Default camera — orbit-friendly starting position
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=551927307]
 transform = Transform3D(1, 0, 0, 0, 0.819, -0.574, 0, 0.574, 0.819, 0, 25, 55)
 fov = 55.0
 
-; FishManager — pure logic node, no spatial transform needed
-[node name="FishManager" type="Node" parent="."]
+[node name="FishManager" type="Node" parent="." unique_id=917688176]
 script = ExtResource("1")
 
-; FishRenderer — MultiMeshInstance3D subclass
-[node name="FishRenderer" type="MultiMeshInstance3D" parent="."]
+[node name="FishRenderer" type="MultiMeshInstance3D" parent="." unique_id=2064159258]
 script = ExtResource("2")
 
-; UI overlay — CanvasLayer renders on top of 3D scene
-[node name="FishUI" type="CanvasLayer" parent="."]
+[node name="FishUI" type="CanvasLayer" parent="." unique_id=1742548187]
 script = ExtResource("3")
 
-; Animation shader preview — right-side panel, isolated SubViewport
-[node name="AnimPreview" type="CanvasLayer" parent="."]
+[node name="AnimPreview" type="CanvasLayer" parent="." unique_id=147953508]
 script = ExtResource("4")
